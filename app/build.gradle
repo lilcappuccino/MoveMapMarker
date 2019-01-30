@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -22,6 +24,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -33,6 +39,11 @@ dependencies {
     implementation 'com.hannesdorfmann.mosby3:mvp:3.1.1'
     implementation "io.reactivex.rxjava2:rxjava:2.2.4"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'android.arch.persistence.room:rxjava2:1.1.1'
     implementation "android.arch.persistence.room:runtime:1.1.1"
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    kapt 'android.arch.persistence.room:compiler:1.1.1'
+//    implementation 'com.airbnb.android:epoxy:3.1.0'
+//     Add the annotation processor if you are using Epoxy's annotations (recommended)
+//    annotationProcessor 'com.airbnb.android:epoxy-processor:3.1.0'
 }

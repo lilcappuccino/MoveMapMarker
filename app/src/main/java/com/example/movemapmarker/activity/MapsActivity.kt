@@ -1,7 +1,6 @@
-package com.example.movemapmarker
+package com.example.movemapmarker.activity
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -11,11 +10,18 @@ import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
 import android.view.animation.LinearInterpolator
+import com.example.movemapmarker.R
+import com.example.movemapmarker.contract.MapsContract
+import com.example.movemapmarker.data.MapDatabase
+import com.example.movemapmarker.presenter.MapsPresenterImpl
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 
 
@@ -45,7 +51,6 @@ class MapsActivity : MvpActivity<MapsContract.View, MapsContract.Presenter>(), O
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
     }
 
     override fun onResume() {
@@ -64,7 +69,9 @@ class MapsActivity : MvpActivity<MapsContract.View, MapsContract.Presenter>(), O
         markerCoordinateY = 50.45466 //Kiev`s coordinate
         val kiev = LatLng(markerCoordinateY, markerCoordinateX)
         with(map) {
-            myMarker = addMarker(MarkerOptions().position(kiev).icon(BitmapDescriptorFactory.fromResource(R.drawable.tractor_ic)).title("Трактор в полі др др др"))
+            myMarker = addMarker(
+                MarkerOptions().position(kiev).icon(BitmapDescriptorFactory.fromResource(R.drawable.tractor_ic)).title("Трактор в полі др др др")
+            )
             moveCamera(CameraUpdateFactory.newLatLng(myMarker?.position))
             animateCamera(CameraUpdateFactory.newLatLngZoom(kiev, zoomLevel), zoomDuration, null)
         }
@@ -89,20 +96,18 @@ class MapsActivity : MvpActivity<MapsContract.View, MapsContract.Presenter>(), O
         }
 
     }
-    override fun moveMarker(displacement: DisplacementModel) {
+
+    override fun moveMarker(displacement: Pair<Float, Float>) {
 //        if(myMarker != null){ myMarker?.remove()}
-        Log.e("VADIM", "move marker ${displacement.x} and ${displacement.y}")
-        markerCoordinateX += displacement.x
-        markerCoordinateY += displacement.y
+        Log.e("VADIM", "move marker ${displacement.first} and ${displacement.second}")
+        markerCoordinateX += displacement.first
+        markerCoordinateY += displacement.second
         animateMarker(myMarker, LatLng(markerCoordinateY, markerCoordinateX))
     }
 
 
-
-
-
-
     private fun animateMarker(marker: Marker?, toPosition: LatLng) {
+        presenter.currentPosition(toPosition)
         if (marker == null) return
         val handler = Handler()
         val start = SystemClock.uptimeMillis()
