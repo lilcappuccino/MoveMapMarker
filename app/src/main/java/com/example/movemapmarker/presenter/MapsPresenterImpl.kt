@@ -3,7 +3,6 @@ package com.example.movemapmarker.presenter
 import android.util.Log
 import com.example.movemapmarker.CalculatePoints
 import com.example.movemapmarker.contract.MapsContract
-import com.example.movemapmarker.data.MapDatabase
 import com.example.movemapmarker.data.entity.LatLonEntity
 import com.example.movemapmarker.repository.MapRepositoryImpl
 import com.google.android.gms.maps.model.LatLng
@@ -14,10 +13,12 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 
+const val TAG_MAP = "MapsPresenterImpl"
+
 class MapsPresenterImpl : MapsContract.Presenter, MvpBasePresenter<MapsContract.View>() {
     private var repository = MapRepositoryImpl()
 
-    var latLonSubject = BehaviorSubject.create<Pair<Float, Float>>()
+    private var latLonSubject = BehaviorSubject.create<Pair<Float, Float>>()
     private var subscriptions = CompositeDisposable()
 
     override fun destroy() {
@@ -27,7 +28,6 @@ class MapsPresenterImpl : MapsContract.Presenter, MvpBasePresenter<MapsContract.
     override fun attachView(view: MapsContract.View) {
         subscriptions.add(
             latLonSubject
-//                .debounce(30, TimeUnit.MILLISECONDS)
                 .map {
                     CalculatePoints.calculateNewLatLon(it.first, it.second)
                 }
@@ -38,7 +38,7 @@ class MapsPresenterImpl : MapsContract.Presenter, MvpBasePresenter<MapsContract.
                     it?.let {
                         view.moveMarker(it)
                     }
-                }, { Log.e("MapsPresenterImpl", it.message) })
+                }, { Log.e(TAG_MAP, it.message) })
         )
     }
 
@@ -55,13 +55,13 @@ class MapsPresenterImpl : MapsContract.Presenter, MvpBasePresenter<MapsContract.
 
     override fun currentPosition(currentMarkerPosition: LatLng) {
         subscriptions.add(
-            Completable.create {
+            Completable.fromAction {
                 repository
-                    .put(LatLonEntity(null, currentMarkerPosition.latitude, currentMarkerPosition.longitude))
+                    .put(LatLonEntity(currentMarkerPosition.latitude, currentMarkerPosition.longitude))
             }
                 .subscribeOn(Schedulers.single())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { it -> Log.e("MapsPresenterImpl", it.message) }
+                .doOnError { it -> Log.e(TAG_MAP, it.message) }
                 .subscribe())
     }
 

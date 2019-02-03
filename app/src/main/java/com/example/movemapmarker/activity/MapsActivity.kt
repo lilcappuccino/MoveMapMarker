@@ -1,6 +1,7 @@
 package com.example.movemapmarker.activity
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -12,7 +13,6 @@ import android.util.Log
 import android.view.animation.LinearInterpolator
 import com.example.movemapmarker.R
 import com.example.movemapmarker.contract.MapsContract
-import com.example.movemapmarker.data.MapDatabase
 import com.example.movemapmarker.presenter.MapsPresenterImpl
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
+import kotlinx.android.synthetic.main.activity_maps.*
 
 
 class MapsActivity : MvpActivity<MapsContract.View, MapsContract.Presenter>(), OnMapReadyCallback, SensorEventListener,
@@ -48,9 +49,10 @@ class MapsActivity : MvpActivity<MapsContract.View, MapsContract.Presenter>(), O
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        (supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?)?.let {
+            it.getMapAsync(this)
+        }
+        btnMapActivityOpenList.setOnClickListener { startActivity(Intent(this, LatLonListActivity::class.java)) }
     }
 
     override fun onResume() {
@@ -98,8 +100,6 @@ class MapsActivity : MvpActivity<MapsContract.View, MapsContract.Presenter>(), O
     }
 
     override fun moveMarker(displacement: Pair<Float, Float>) {
-//        if(myMarker != null){ myMarker?.remove()}
-        Log.e("VADIM", "move marker ${displacement.first} and ${displacement.second}")
         markerCoordinateX += displacement.first
         markerCoordinateY += displacement.second
         animateMarker(myMarker, LatLng(markerCoordinateY, markerCoordinateX))

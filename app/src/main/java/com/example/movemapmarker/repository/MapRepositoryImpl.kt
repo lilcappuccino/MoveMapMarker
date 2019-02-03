@@ -12,7 +12,9 @@ class MapRepositoryImpl {
         database?.latLonDao()?.insert(latLon)
     }
 
-    fun getLatLon(): Single<LatLonEntity>? = database?.latLonDao()?.getLatLon()
+    fun getLatLon(): Single<List<LatLonEntity>> = database?.latLonDao()?.getLatLon() ?: Single.just(arrayListOf())
+
+    fun clearDataStore() = database?.clearAllTables()
 
 
 }

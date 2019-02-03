@@ -4,13 +4,14 @@ import android.os.SystemClock
 
 const val ACCURACY = 0.5
 const val DISPLACEMENT = 0.001f
+const val TIME_LIMIT = 35
 
 object CalculatePoints {
     private var currentTime = SystemClock.currentThreadTimeMillis()
 
     fun calculateNewLatLon(positionX: Float, positionY: Float): Pair<Float, Float> {
 
-        if (SystemClock.currentThreadTimeMillis() - currentTime > 35) {
+        if (SystemClock.currentThreadTimeMillis() - currentTime > TIME_LIMIT) {
             currentTime = SystemClock.currentThreadTimeMillis()
         } else {
             return 0f to 0f

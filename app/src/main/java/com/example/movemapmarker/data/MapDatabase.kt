@@ -1,17 +1,16 @@
 package com.example.movemapmarker.data
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.Room
-import android.arch.persistence.room.RoomDatabase
 import android.content.Context
-import com.example.movemapmarker.data.entity.LatLonEntity
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.example.movemapmarker.data.dao.LatLonDao
+import com.example.movemapmarker.data.entity.LatLonEntity
 
 @Database(entities = [LatLonEntity::class], version = 1, exportSchema = false)
 abstract class MapDatabase : RoomDatabase() {
 
     abstract fun latLonDao(): LatLonDao
-
 
 
     companion object {
