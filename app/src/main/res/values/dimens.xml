@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin">8dp</dimen>
+    <dimen name="custom_margin_17">17dp</dimen>
+    <dimen name="big_margin">20dp</dimen>
+
+    <dimen name="icon_size">32dp</dimen>
+    <dimen name="icon_size_big">48dp</dimen>
+
+    <dimen name="shadow_size">2dp</dimen>
+
+    <dimen name="empty_state_pic">300dp</dimen>
+    <dimen name="text_small">10sp</dimen>
+    <dimen name="text_normal">20sp</dimen>
+    <dimen name="text_big">30sp</dimen>
+</resources>

@@ -5,18 +5,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activity.MapsActivity">
+
     <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"/>
-    <ImageView android:layout_width="48dp"
-               android:layout_height="48dp"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+    />
+
+    <ImageView android:layout_width="@dimen/icon_size_big"
+               android:layout_height="@dimen/icon_size_big"
                android:id="@+id/btnMapActivityOpenList"
                android:layout_alignParentEnd="true"
                android:layout_alignParentBottom="true"
-               android:layout_margin="25dp"
-               android:padding="2dp"
+               android:layout_margin="@dimen/big_margin"
+               android:padding="@dimen/shadow_size"
                android:background="@drawable/shadow"
-    android:src="@drawable/ic_map"/>
+               android:src="@drawable/ic_map"
+    />
 </RelativeLayout>

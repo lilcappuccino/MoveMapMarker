@@ -3,13 +3,12 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#fff"
+                android:background="@android:color/white"
 >
     <ImageView
             android:id="@+id/emptyImgLatLonList"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:visibility="gone"
+            android:layout_width="@dimen/empty_state_pic"
+            android:layout_height="@dimen/empty_state_pic"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:src="@drawable/empty_state"
@@ -18,24 +17,26 @@
             android:id="@+id/emptyTextLatLonList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="List is empty"
-            android:textColor="#000"
-            android:visibility="gone"
-            android:textSize="30sp"
+            android:text="@string/list_is_empty"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_big"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/emptyImgLatLonList"/>
+            android:layout_below="@id/emptyImgLatLonList"
+    />
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerLatLonList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
     />
-    <ImageView android:layout_width="64dp"
-               android:layout_height="64dp"
+
+    <ImageView android:layout_width="@dimen/icon_size_big"
+               android:layout_height="@dimen/icon_size_big"
                android:id="@+id/cleanLatLonList"
                android:src="@drawable/ic_delete"
                android:layout_alignParentEnd="true"
                android:layout_alignParentBottom="true"
-               android:layout_margin="16dp"
+               android:layout_margin="@dimen/custom_margin_17"
     />
 
 </RelativeLayout>

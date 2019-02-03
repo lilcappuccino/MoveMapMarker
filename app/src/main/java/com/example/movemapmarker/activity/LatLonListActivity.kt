@@ -2,6 +2,7 @@ package com.example.movemapmarker.activity
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movemapmarker.R
 import com.example.movemapmarker.contract.LatLonListContract
@@ -27,11 +28,16 @@ class LatLonListActivity : MvpActivity<LatLonListContract.View, LatLonListContra
     private fun onDeleteClick() {
         presenter.cleanDB()
         controller.latLon = arrayListOf()
-        emptyImgLatLonList.visibility = View.VISIBLE
-        emptyTextLatLonList.visibility = View.VISIBLE
+        showEmptyState(true)
     }
 
     override fun setData(dbLatLonList: List<Pair<Double, Double>>) {
         controller.latLon = dbLatLonList
+        showEmptyState(dbLatLonList.isEmpty())
+    }
+
+    private fun showEmptyState(isVisible : Boolean){
+        emptyImgLatLonList.isVisible = isVisible
+        emptyTextLatLonList.isVisible = isVisible
     }
 }
